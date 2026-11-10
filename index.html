@@ -1,0 +1,239 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0b0b0b">
+<title>SCANTY TOOLS — All Your Tools in One Place</title>
+<meta name="description" content="SCANTY TOOLS: free online productivity, text, PDF, developer, calculator and social media tools.">
+<!-- Add your verified Monetag verification meta tag here, inside HEAD. -->
+<style>
+:root{--bg:#090909;--panel:#141414;--panel2:#1b1b1b;--red:#ed2424;--text:#f5f5f5;--muted:#aaa;--line:#292929}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-serif}
+header{background:#101010;border-bottom:1px solid var(--line);padding:18px 5%;position:sticky;top:0;z-index:10}
+.top{display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap}
+.logo{font-size:24px;font-weight:900;letter-spacing:1px}
+.logo span{color:var(--red)}
+nav{display:flex;gap:15px;flex-wrap:wrap}
+nav a{color:#ddd;text-decoration:none;font-size:13px}
+nav a:hover{color:var(--red)}
+.hero{text-align:center;padding:55px 15px 35px;background:radial-gradient(ellipse at top,#381010 0%,#090909 65%)}
+.hero h1{font-size:clamp(30px,6vw,54px);margin:0 0 12px}
+.hero h1 span{color:var(--red)}
+.hero p{color:var(--muted);line-height:1.6}
+.search{max-width:600px;margin:25px auto 0;display:flex;gap:8px}
+input,textarea,select,button{font:inherit}
+.search input{flex:1}
+input,textarea,select{width:100%;background:#0b0b0b;color:white;border:1px solid #383838;border-radius:8px;padding:12px;margin:5px 0}
+textarea{min-height:95px;resize:vertical}
+button,.btn{background:var(--red);color:white;border:0;padding:11px 16px;border-radius:8px;cursor:pointer;font-weight:bold}
+button:hover,.btn:hover{background:#c91818}
+main{max-width:1200px;margin:auto;padding:25px 16px 60px}
+.ad{border:1px dashed #494949;border-radius:10px;text-align:center;padding:20px;color:#777;margin:20px auto;max-width:900px;font-size:12px}
+.section-title{font-size:22px;margin:30px 0 15px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px;cursor:pointer;transition:.2s}
+.card:hover{border-color:var(--red);transform:translateY(-2px)}
+.card .emoji{font-size:25px}
+.card h3{margin:10px 0 6px}
+.card p{color:var(--muted);font-size:13px;line-height:1.5;margin:0}
+#workspace{display:none;background:var(--panel);border:1px solid var(--line);padding:20px;border-radius:14px;margin:25px 0}
+#workspace h2{margin-top:0}
+#workspace .back{background:#333;margin-bottom:15px}
+.result{background:#090909;border:1px solid #333;border-radius:8px;padding:13px;margin-top:12px;overflow-wrap:anywhere;white-space:pre-wrap}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+.row>*{flex:1;min-width:120px}
+.small{font-size:12px;color:var(--muted)}
+footer{text-align:center;border-top:1px solid var(--line);padding:30px 15px;color:var(--muted);font-size:13px}
+footer a{color:#ddd;margin:0 8px}
+.hidden{display:none!important}
+label{display:block;margin-top:12px;font-size:13px;color:#ddd}
+video{max-width:100%}
+@media(max-width:600px){header{position:static}.top{justify-content:center}nav{justify-content:center}.search{flex-direction:column}.hero{padding-top:38px}}
+</style>
+</head>
+<body>
+<header>
+ <div class="top">
+  <div class="logo">SCANTY <span>TOOLS</span></div>
+  <nav>
+   <a href="#home">Home</a><a href="#tools">All Tools</a><a href="#about">About</a>
+  </nav>
+ </div>
+</header>
+
+<section class="hero" id="home">
+ <h1>ALL YOUR TOOLS.<br><span>ONE PLACE.</span></h1>
+ <p>Free online tools to make your everyday work easier.</p>
+ <div class="search">
+  <input id="search" placeholder="Search for a tool..." oninput="filterTools()">
+  <button onclick="filterTools()">Search</button>
+ </div>
+</section>
+
+<main id="tools">
+ <div class="ad">ADVERTISEMENT SPACE</div>
+ <div id="workspace">
+  <button class="back" onclick="closeTool()">← Back to tools</button>
+  <div id="toolContent"></div>
+ </div>
+ <h2 class="section-title">Explore Our Tools</h2>
+ <div class="grid" id="toolGrid"></div>
+ <div class="ad">ADVERTISEMENT SPACE</div>
+ <section id="about">
+  <h2 class="section-title">About SCANTY TOOLS</h2>
+  <p class="small">SCANTY TOOLS brings useful online utilities together in one simple, mobile-friendly website. Use the tools directly in your browser. Some features require an internet connection or supported browser permissions.</p>
+ </section>
+</main>
+
+<footer>
+ <div class="logo">SCANTY <span>TOOLS</span></div>
+ <p>Useful tools. Simple solutions.</p>
+ <a href="mailto:contact@example.com">Contact</a>
+ <a href="#about">About</a>
+ <p>© <span id="year"></span> SCANTY TOOLS. All rights reserved.</p>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script>
+const tools=[
+["todo","✅","To-do List","Create and manage your daily tasks.","Productivity"],
+["notes","📝","Notes App","Write and save notes in your browser.","Productivity"],
+["planner","📅","Daily Planner","Plan your day and organize activities.","Productivity"],
+["timer","⏱️","Pomodoro Timer","Focus with a work and break timer.","Productivity"],
+["calendar","🗓️","Calendar & Date Calculator","Find the number of days between dates.","Productivity"],
+["word","🔤","Word & Character Counter","Count words, characters and sentences.","Text"],
+["compare","⚖️","Text Comparison","Compare two pieces of text.","Text"],
+["markdown","📄","Markdown Editor","Write Markdown and preview it.","Text"],
+["pdfmerge","📚","PDF Merger","Combine PDF files into one document.","PDF"],
+["pdfsplit","✂️","PDF Splitter","Extract selected pages from a PDF.","PDF"],
+["imgpdf","🖼️","Image to PDF","Convert an image into a PDF.","PDF"],
+["minify","💻","Code Minifier","Minify HTML, CSS or JavaScript.","Developer"],
+["base64","🔐","Base64 Encoder / Decoder","Encode and decode Base64 text.","Developer"],
+["uuid","🆔","UUID Generator","Generate unique identifiers.","Developer"],
+["qr","▦","QR Code Generator","Create QR codes from text or links.","Developer"],
+["scanner","📷","QR Code Scanner","Scan QR codes using your camera.","Developer"],
+["color","🎨","Color Picker","Choose colors and copy HEX codes.","Developer"],
+["calc","🧮","Calculator","Perform everyday calculations.","Everyday"],
+["age","🎂","Age Calculator","Calculate your age from your birth date.","Everyday"],
+["bmi","⚖️","BMI Calculator","Calculate body mass index.","Everyday"],
+["percent","％","Percentage Calculator","Calculate percentages quickly.","Everyday"],
+["unit","📏","Unit Converter","Convert common units of measurement.","Everyday"],
+["currency","💱","Currency Converter","Convert currencies using live exchange data.","Everyday"],
+["hashtags","#️⃣","Hashtag Generator","Generate hashtags for your topic.","Social"],
+["caption","✍️","Caption Generator","Create caption ideas for social posts.","Social"],
+["bio","👤","Bio Generator","Create a short social media bio.","Social"],
+["username","✨","Username Generator","Generate username ideas.","Social"],
+["video","🎬","Video Downloader Guide","Find permitted ways to download videos.","Social"]
+];
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function renderTools(list=tools){
+ $("toolGrid").innerHTML=list.map(t=>`<div class="card" onclick="openTool('${t[0]}')"><div class="emoji">${t[1]}</div><h3>${t[2]}</h3><p>${t[3]}</p><p class="small">${t[4]}</p></div>`).join("");
+}
+function filterTools(){
+ const q=$("search").value.toLowerCase();
+ renderTools(tools.filter(t=>t.join(" ").toLowerCase().includes(q)));
+}
+function field(id,label,placeholder="",type="text"){
+ return `<label>${label}</label><input id="${id}" type="${type}" placeholder="${placeholder}">`;
+}
+function area(id,label,placeholder=""){
+ return `<label>${label}</label><textarea id="${id}" placeholder="${placeholder}"></textarea>`;
+}
+function out(s){$("output").innerHTML=s;}
+function outputBox(){return `<div id="output" class="result">Your result will appear here.</div>`;}
+function action(label,fn){return `<button onclick="${fn}">${label}</button>`;}
+function openTool(id){
+ const t=tools.find(x=>x[0]===id); if(!t)return;
+ $("workspace").style.display="block";
+ $("toolContent").innerHTML=`<h2>${t[1]} ${t[2]}</h2><p class="small">${t[3]}</p>${toolUI(id)}`;
+ $("workspace").scrollIntoView({behavior:"smooth"});
+}
+function closeTool(){$("workspace").style.display="none";}
+function toolUI(id){
+ switch(id){
+ case"todo":return `<form onsubmit="addTask(event)"><div class="row"><input id="task" placeholder="Enter a task" required><button>Add task</button></div></form><div id="tasks"></div>`;
+ case"notes":return `${field("noteTitle","Note title","My note")}${area("noteBody","Your note","Write something...")}${action("Save note","saveNote()")}<div id="notesList"></div>`;
+ case"planner":return `${field("planDate","Date","","date")}${area("planText","Today's plan","Write your schedule...")}${action("Save plan","savePlan()")}<div id="planList"></div>`;
+ case"timer":return `<h1 id="clock" style="font-size:55px">25:00</h1><div class="row">${action("Start","timerStart()")}${action("Pause","timerPause()")}${action("Reset","timerReset()")}</div><p class="small">25 minutes focus session.</p>`;
+ case"calendar":return `${field("dateA","Start date","","date")}${field("dateB","End date","","date")}${action("Calculate days","dateDiff()")}${outputBox()}`;
+ case"word":return `${area("wordText","Enter your text","Start typing...")}<div id="wordStats" class="result">Words: 0 | Characters: 0</div>`;
+ case"compare":return `${area("textA","First text")}${area("textB","Second text")}${action("Compare","compareText()")}${outputBox()}`;
+ case"markdown":return `${area("mdText","Markdown input","# Hello\\nWrite **Markdown** here.")}<h3>Preview</h3><div id="mdPreview" class="result"></div>`;
+ case"pdfmerge":return `<label>Select two or more PDF files</label><input id="pdfFiles" type="file" accept="application/pdf" multiple>${action("Merge PDFs","mergePDF()")}${outputBox()}`;
+ case"pdfsplit":return `<label>Select a PDF file</label><input id="splitFile" type="file" accept="application/pdf">${field("pages","Pages to extract","1,3-5")}${action("Extract pages","splitPDF()")}${outputBox()}`;
+ case"imgpdf":return `<label>Select an image</label><input id="imageFile" type="file" accept="image/*">${action("Convert to PDF","imagePDF()")}${outputBox()}`;
+ case"minify":return `<select id="codeType"><option>HTML</option><option>CSS</option><option>JavaScript</option></select>${area("codeInput","Paste your code")}${action("Minify","minifyCode()")}${outputBox()}`;
+ case"base64":return `${area("baseText","Enter text") }<div class="row">${action("Encode","baseEncode()")}${action("Decode","baseDecode()")}</div>${outputBox()}`;
+ case"uuid":return `${field("uuidCount","How many?","5","number")}${action("Generate UUIDs","makeUUID()")}${outputBox()}`;
+ case"qr":return `${field("qrText","Text or URL","https://example.com")}${action("Generate QR","makeQR()")}<div id="qrResult" class="result"></div>`;
+ case"scanner":return `<button onclick="startScanner()">Start camera</button><button onclick="stopScanner()">Stop camera</button><video id="scanVideo" autoplay playsinline></video><canvas id="scanCanvas" class="hidden"></canvas>${outputBox()}<p class="small">Camera permission is required. Use HTTPS.</p>`;
+ case"color":return `<input id="colorPick" type="color" value="#ed2424"><div id="colorValue" class="result">#ed2424</div>${action("Copy HEX","copyText($('colorPick').value)")}`;
+ case"calc":return `${field("calcInput","Calculation","(25+5)*2")}${action("Calculate","calculate()")}${outputBox()}`;
+ case"age":return `${field("birth","Date of birth","","date")}${action("Calculate age","ageCalc()")}${outputBox()}`;
+ case"bmi":return `${field("weight","Weight in kg","70","number")}${field("height","Height in cm","175","number")}${action("Calculate BMI","bmiCalc()")}${outputBox()}`;
+ case"percent":return `${field("percentA","Percentage","20","number")}${field("percentB","Number","150","number")}${action("Calculate","percentCalc()")}${outputBox()}`;
+ case"unit":return `<select id="unitType"><option value="km">Kilometres to miles</option><option value="mi">Miles to kilometres</option><option value="kg">Kilograms to pounds</option><option value="lb">Pounds to kilograms</option><option value="cm">Centimetres to inches</option><option value="in">Inches to centimetres</option><option value="c">Celsius to Fahrenheit</option><option value="f">Fahrenheit to Celsius</option></select>${field("unitValue","Value","Enter a number","number")}${action("Convert","unitConvert()")}${outputBox()}`;
+ case"currency":return `${field("moneyAmount","Amount","100","number")}<div class="row"><select id="fromCurrency"><option>USD</option><option>GHS</option><option>EUR</option><option>GBP</option><option>NGN</option><option>KES</option></select><select id="toCurrency"><option>GHS</option><option>USD</option><option>EUR</option><option>GBP</option><option>NGN</option><option>KES</option></select></div>${action("Convert currency","currencyConvert()")}${outputBox()}<p class="small">Rates are retrieved from a public exchange-rate service and may change.</p>`;
+ case"hashtags":return `${field("topic","Topic or keywords","Travel, fashion, business")}${action("Generate hashtags","generateTags()")}${outputBox()}`;
+ case"caption":return `${field("captionTopic","Post topic","New business launch")}${action("Generate captions","generateCaptions()")}${outputBox()}`;
+ case"bio":return `${field("bioName","Name or brand","SCANTY")}${field("bioInterest","What do you do?","Digital creator")}${action("Generate bio","generateBio()")}${outputBox()}`;
+ case"username":return `${field("userTopic","Name or keyword","Scanty")}${action("Generate usernames","generateUsers()")}${outputBox()}`;
+ case"video":return `${field("videoURL","Paste video URL","https://...")}<button onclick="videoGuide()">Check platform</button>${outputBox()}<p class="small">Only download videos you own or have permission to save. Platform rules and creator settings apply. This tool does not bypass restrictions or download protected videos.</p>`;
+ }
+}
+function store(key,value){localStorage.setItem(key,JSON.stringify(value))}
+function read(key){try{return JSON.parse(localStorage.getItem(key)||"[]")}catch{return[]}}
+function addTask(e){e.preventDefault();let a=read("scantyTasks");a.push({text:$("task").value,done:false});store("scantyTasks",a);$("task").value="";showTasks()}
+function showTasks(){$("tasks").innerHTML=read("scantyTasks").map((t,i)=>`<p><input style="width:auto" type="checkbox" ${t.done?"checked":""} onchange="toggleTask(${i})"> ${esc(t.text)} <button onclick="deleteTask(${i})">×</button></p>`).join("")}
+function toggleTask(i){let a=read("scantyTasks");a[i].done=!a[i].done;store("scantyTasks",a);showTasks()}
+function deleteTask(i){let a=read("scantyTasks");a.splice(i,1);store("scantyTasks",a);showTasks()}
+function saveNote(){let a=read("scantyNotes");a.push({title:$("noteTitle").value,body:$("noteBody").value});store("scantyNotes",a);showNotes()}
+function showNotes(){$("notesList").innerHTML=read("scantyNotes").map(n=>`<div class="result"><b>${esc(n.title)}</b><p>${esc(n.body)}</p></div>`).join("")}
+function savePlan(){let a=read("scantyPlans");a.push({date:$("planDate").value,text:$("planText").value});store("scantyPlans",a);$("planList").innerHTML=a.map(p=>`<div class="result"><b>${esc(p.date)}</b><p>${esc(p.text)}</p></div>`).join("")}
+let timer=null,seconds=1500;
+function timerDisplay(){$("clock").textContent=String(Math.floor(seconds/60)).padStart(2,"0")+":"+String(seconds%60).padStart(2,"0")}
+function timerStart(){if(timer)return;timer=setInterval(()=>{if(seconds>0){seconds--;timerDisplay()}else timerPause()},1000)}
+function timerPause(){clearInterval(timer);timer=null}
+function timerReset(){timerPause();seconds=1500;timerDisplay()}
+function dateDiff(){let a=new Date($("dateA").value),b=new Date($("dateB").value);out(isNaN(a)||isNaN(b)?"Choose both dates.":Math.abs(Math.round((b-a)/86400000))+" days")}
+function wordCount(){let s=$("wordText").value;let words=s.trim()?s.trim().split(/\s+/).length:0;$("wordStats").textContent=`Words: ${words} | Characters: ${s.length} | No spaces: ${s.replace(/\s/g,"").length} | Sentences: ${(s.match(/[.!?]+/g)||[]).length}`}
+function compareText(){let a=$("textA").value,b=$("textB").value;out(a===b?"Both texts are identical.":"The texts are different.\\nFirst text length: "+a.length+"\\nSecond text length: "+b.length)}
+function markdownPreview(){let s=$("mdText").value;$("mdPreview").innerHTML=window.marked?marked.parse(s):esc(s)}
+async function mergePDF(){try{let files=[...$("pdfFiles").files];if(files.length<2)return out("Choose at least two PDF files.");let merged=await PDFLib.PDFDocument.create();for(let f of files){let doc=await PDFLib.PDFDocument.load(await f.arrayBuffer());let pages=await merged.copyPages(doc,doc.getPageIndices());pages.forEach(p=>merged.addPage(p))}downloadBlob(new Blob([await merged.save()],{type:"application/pdf"}),"merged.pdf")}catch(e){out("Could not merge PDFs: "+e.message)}}
+async function splitPDF(){try{let f=$("splitFile").files[0];if(!f)return out("Choose a PDF.");let doc=await PDFLib.PDFDocument.load(await f.arrayBuffer());let indices=[];let parts=$("pages").value.split(",");for(let p of parts){let m=p.trim().match(/^(\d+)(?:-(\d+))?$/);if(!m)continue;let a=+m[1],b=+(m[2]||m[1]);for(let n=a;n<=b;n++)if(n>=1&&n<=doc.getPageCount())indices.push(n-1)}if(!indices.length)return out("No valid pages selected.");let newDoc=await PDFLib.PDFDocument.create();let pages=await newDoc.copyPages(doc,[...new Set(indices)]);pages.forEach(p=>newDoc.addPage(p));downloadBlob(new Blob([await newDoc.save()],{type:"application/pdf"}),"extracted-pages.pdf")}catch(e){out("PDF error: "+e.message)}}
+async function imagePDF(){let f=$("imageFile").files[0];if(!f)return out("Choose an image.");let data=await new Promise((res,rej)=>{let r=new FileReader();r.onload=()=>res(r.result);r.onerror=rej;r.readAsDataURL(f)});let {jsPDF}=window.jspdf;let pdf=new jsPDF();let img=new Image();img.onload=()=>{let w=190,h=w*img.height/img.width;if(h>270){h=270;w=h*img.width/img.height}pdf.addImage(data,"JPEG",10,10,w,h);pdf.save("image.pdf")};img.src=data}
+function downloadBlob(blob,name){let a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;a.click();URL.revokeObjectURL(a.href);out("Your download is ready.")}
+function minifyCode(){let s=$("codeInput").value,t=$("codeType").value;if(t==="HTML")s=s.replace(/<!--[\s\S]*?-->/g,"").replace(/>\s+</g,"><").trim();else if(t==="CSS")s=s.replace(/\/\*[\s\S]*?\*\//g,"").replace(/\s+/g," ").replace(/\s*([{}:;,])\s*/g,"$1").trim();else s=s.replace(/\/\*[\s\S]*?\*\//g,"").replace(/(^|\s)\/\/.*$/gm,"").replace(/\s+/g," ").trim();out(esc(s))}
+function baseEncode(){try{out(btoa(unescape(encodeURIComponent($("baseText").value))))}catch(e){out("Unable to encode.")}}
+function baseDecode(){try{out(decodeURIComponent(escape(atob($("baseText").value.trim()))))}catch(e){out("Invalid Base64 input.")}}
+function makeUUID(){let n=Math.max(1,Math.min(100,Number($("uuidCount").value)||1));out(Array.from({length:n},()=>crypto.randomUUID()).join("\\n"))}
+function makeQR(){let s=$("qrText").value;if(!s)return;let d=$("qrResult");d.innerHTML="";new QRCode(d,{text:s,width:220,height:220,colorDark:"#000",colorLight:"#fff"})}
+let scanStream=null,scanFrame=null;
+async function startScanner(){try{scanStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:"environment"}});let v=$("scanVideo");v.srcObject=scanStream;await v.play();out("Camera started. Point it at a QR code.");}catch(e){out("Camera unavailable: "+e.message)}}
+function stopScanner(){if(scanStream)scanStream.getTracks().forEach(t=>t.stop());scanStream=null;cancelAnimationFrame(scanFrame)}
+function copyText(s){navigator.clipboard?.writeText(s).then(()=>out("Copied: "+s)).catch(()=>out(s))}
+function calculate(){try{let s=$("calcInput").value;if(!/^[0-9+\-*/().%\s]+$/.test(s))throw Error("Use numbers and basic operators only.");out("Result: "+Function('"use strict";return ('+s+')')())}catch(e){out("Invalid calculation.")}}
+function ageCalc(){let d=new Date($("birth").value);if(isNaN(d))return out("Choose your birth date.");let n=new Date();let a=n.getFullYear()-d.getFullYear();if(n.getMonth()<d.getMonth()||(n.getMonth()===d.getMonth()&&n.getDate()<d.getDate()))a--;out("Age: "+a+" years")}
+function bmiCalc(){let w=+$("weight").value,h=+$("height").value/100;if(w<=0||h<=0)return out("Enter valid measurements.");let b=w/(h*h);out("BMI: "+b.toFixed(1)+" (BMI is a screening measure, not a diagnosis.)")}
+function percentCalc(){out((+$("percentA").value/100*+$("percentB").value).toFixed(2))}
+function unitConvert(){let v=+$("unitValue").value,t=$("unitType").value,m={km:v*.621371,mi:v/0.621371,kg:v*2.20462,lb:v/2.20462,cm:v/2.54,in:v*2.54,c:v*9/5+32,f:(v-32)*5/9};out(m[t].toFixed(4))}
+async function currencyConvert(){try{let a=+$("moneyAmount").value,from=$("fromCurrency").value,to=$("toCurrency").value;if(a<0)throw Error("Enter a valid amount.");let r=await fetch(`https://api.frankfurter.app/latest?amount=${a}&from=${from}&to=${to}`);let j=await r.json();if(!j.rates||!j.rates[to])throw Error("Currency unavailable.");out(`${a} ${from} = ${j.rates[to]} ${to}\\nRate date: ${j.date}`)}catch(e){out("Currency conversion unavailable: "+e.message)}}
+function generateTags(){let s=$("topic").value.toLowerCase().match(/[a-z0-9]+/g)||[];out([...new Set([...s,...s.map(x=>x+"life"),...s.map(x=>x+"daily"),"trending","explore","fyp"])].map(x=>"#"+x).join(" "))}
+function generateCaptions(){let s=$("captionTopic").value;out([`Big things are happening with ${s}! 🔥`,`A new chapter, a fresh start: ${s}. ❤️`,`Making every moment count. ${s} ✨`,`Stay focused. Keep growing. ${s}. 🚀`].join("\\n\\n"))}
+function generateBio(){let n=$("bioName").value,i=$("bioInterest").value;out(`${n} ✨\\n${i}\\nCreating • Growing • Inspiring\\n📩 Get in touch for enquiries.`)}
+function generateUsers(){let s=$("userTopic").value.replace(/\s/g,"").toLowerCase();out([s+"_official", "its_"+s, s+".hub", "real_"+s, s+"_world", "the_"+s+"_", s+"360", s+"_x"].join("\\n"))}
+function videoGuide(){let u=$("videoURL").value;let host;try{host=new URL(u).hostname.toLowerCase()}catch{return out("Enter a valid video URL.")}let platform=host.includes("youtube")||host.includes("youtu.be")?"YouTube":host.includes("facebook")||host.includes("fb.watch")?"Facebook":host.includes("tiktok")?"TikTok":"Unknown platform";out("Platform detected: "+platform+"\\n\\nUse the platform's official download or save feature where available. YouTube generally restricts downloading outside its supported features. Facebook and TikTok downloads depend on creator settings and permissions. Do not download or redistribute content without permission.")}
+$("toolGrid").addEventListener("click",()=>{});
+document.addEventListener("input",e=>{if(e.target.id==="wordText")wordCount();if(e.target.id==="mdText")markdownPreview();if(e.target.id==="colorPick")$("colorValue").textContent=e.target.value});
+$("year").textContent=new Date().getFullYear();
+renderTools();
+</script>
+</body>
+</html>
